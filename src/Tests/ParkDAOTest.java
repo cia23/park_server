@@ -2,22 +2,15 @@ package Tests;
 
 import DataAccess.DataAccessException;
 import DataAccess.Database;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import DataAccess.DataAccessException;
-import DataAccess.Database;
 import DataAccess.ParkDAO;
 import Model.Park;
-import java.sql.Connection;
-import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.util.ArrayList;
 
 
 public class ParkDAOTest {
@@ -104,8 +97,8 @@ public class ParkDAOTest {
     public void deletePass() throws DataAccessException {
         this.pDao.insert(this.park);
         Park newPark = new Park("p2", "Yellowstone", 40.2338F, 111.6585F, "WY");
-        this.pDao.insert(park);
-        this.pDao.delete("Yellowstone");
+        this.pDao.insert(newPark);
+        this.pDao.delete("p2");
         Park compareTest = this.pDao.find(newPark.getParkID());
         Assertions.assertNull(compareTest);
         compareTest = this.pDao.find(this.park.getParkID());

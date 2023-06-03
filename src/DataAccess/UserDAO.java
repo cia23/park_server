@@ -14,16 +14,11 @@ public class UserDAO {
 
 
     public void insert(User user) throws DataAccessException {
-        //We can structure our string to be similar to a sql command, but if we insert question
-        //marks we can change them later with help from the statement
-        String sql = "INSERT INTO users (username, password, id ) VALUES(?,?,?)";
+        String sql = "INSERT INTO users (username, password, userID ) VALUES(?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            //Using the statements built-in set(type) functions we can pick the question mark we want
-            //to fill in and give it a proper value. The first argument corresponds to the first
-            //question mark found in our sql String
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getID());
+            stmt.setString(3, user.getUserID());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -34,12 +29,12 @@ public class UserDAO {
     public User find(String username) throws DataAccessException {
         User user;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Users WHERE username = ?;";
+        String sql = "SELECT * FROM Users WHERE userID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                user = new User(rs.getString("username"), rs.getString("password"), rs.getString("id"));
+                user = new User(rs.getString("username"), rs.getString("password"), rs.getString("userID"));
                 return user;
             }
         } catch (SQLException e) {
@@ -66,7 +61,7 @@ public class UserDAO {
             // stmt.setString(1, eventID);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                User user = new User(rs.getString("username"), rs.getString("password"), rs.getString("id"));
+                User user = new User(rs.getString("username"), rs.getString("password"), rs.getString("userID"));
                 users.add(user);
             }
             return users;
@@ -86,13 +81,13 @@ public class UserDAO {
         //  return null;
     }
 
-    public void delete(String username) throws DataAccessException {
-        String sql = "DELETE FROM users WHERE username = ?;";
+    public void delete(String userID) throws DataAccessException {
+        String sql = "DELETE FROM users WHERE userID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.setString(1, username);
+            stmt.setString(1, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataAccessException("SQL Error encountered while deleteing username");
+            throw new DataAccessException("SQL Error encountered while deleting user");
         }
     }
 
@@ -105,33 +100,3 @@ public class UserDAO {
         }
     }
 }
-/*
-public class UserDAO {
-    private Connection connection;
-
-    public UserDAO() {
-    }
-
-    public UserDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    /**
-     * inserts user in table
-     * @param user
-     */
-//  public void insertUser(User user) {}
-
-/**
- * deletes user from table
- * @param user
- */
-// public void deleteUser(User user) {}
-
-/**
- * returns user from table
- * @param user
- * @return user
- */
-// public User getUser(User user) {return user;}
-//}

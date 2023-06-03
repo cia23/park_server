@@ -15,13 +15,8 @@ public class TripDAO {
 
 
     public void insert(Trip trip) throws DataAccessException {
-        //We can structure our string to be similar to a sql command, but if we insert question
-        //marks we can change them later with help from the statement
-        String sql = "INSERT INTO trips (trip_id, user_id, park_id, date) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO trips (tripID, userID, parkID, date) VALUES(?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            //Using the statements built-in set(type) functions we can pick the question mark we want
-            //to fill in and give it a proper value. The first argument corresponds to the first
-            //question mark found in our sql String
             stmt.setString(1, trip.getTripID());
             stmt.setString(2, trip.getUserID());
             stmt.setString(3, trip.getParkID());
@@ -33,15 +28,15 @@ public class TripDAO {
         }
     }
 
-    public Trip find(String trip_id) throws DataAccessException {
+    public Trip find(String tripID) throws DataAccessException {
         Trip trip;
         ResultSet rs = null;
-        String sql = "SELECT * FROM trips WHERE trip_id = ?;";
+        String sql = "SELECT * FROM trips WHERE tripID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, trip_id);
+            stmt.setString(1, tripID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                trip = new Trip(rs.getString("trip_id"),  rs.getString("user_id"), rs.getString("park_id"), rs.getString("date"));
+                trip = new Trip(rs.getString("tripID"),  rs.getString("userID"), rs.getString("parkID"), rs.getString("date"));
                 return trip;
             }
         } catch (SQLException e) {
@@ -68,7 +63,7 @@ public class TripDAO {
             // stmt.setString(1, eventID);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Trip trip = new Trip(rs.getString("trip_id"), rs.getString("user_id"), rs.getString("park_id"), rs.getString("date"));
+                Trip trip = new Trip(rs.getString("tripID"), rs.getString("userID"), rs.getString("parkID"), rs.getString("date"));
                 trips.add(trip);
             }
             return trips;
@@ -87,13 +82,13 @@ public class TripDAO {
         }
     }
 
-    public void delete(String user_id) throws DataAccessException {
-        String sql = "DELETE FROM trips WHERE trip_id = ?;";
+    public void delete(String userID) throws DataAccessException {
+        String sql = "DELETE FROM trips WHERE tripID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.setString(1, user_id);
+            stmt.setString(1, userID);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataAccessException("SQL Error encountered while deleting trip_id");
+            throw new DataAccessException("SQL Error encountered while deleting tripID");
         }
     }
 

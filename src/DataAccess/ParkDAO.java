@@ -1,14 +1,9 @@
 package DataAccess;
 
+import Model.Park;
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import Model.Park;
 
 
 public class ParkDAO {
@@ -19,7 +14,7 @@ public class ParkDAO {
     }
 
     public void insert(Park park) throws DataAccessException {
-        String sql = "INSERT INTO parks (id, name, latitude, longitude, state) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO parks (parkID, name, latitude, longitude, state) VALUES(?,?,?,?,?)";
 
         try {
             PreparedStatement stmt = this.conn.prepareStatement(sql);
@@ -55,7 +50,7 @@ public class ParkDAO {
 
     public Park find(String parkID) throws DataAccessException {
         ResultSet rs = null;
-        String sql = "SELECT * FROM parks WHERE id = ?;";
+        String sql = "SELECT * FROM parks WHERE parkID = ?;";
 
         Park var6;
         try {
@@ -66,7 +61,7 @@ public class ParkDAO {
                     stmt.setString(1, parkID);
                     rs = stmt.executeQuery();
                     if (rs.next()) {
-                        Park park = new Park(rs.getString("id"), rs.getString("name"), rs.getFloat("latitude"), rs.getFloat("longitude"), rs.getString("state"));
+                        Park park = new Park(rs.getString("parkID"), rs.getString("name"), rs.getFloat("latitude"), rs.getFloat("longitude"), rs.getString("state"));
                         var6 = park;
                         break label147;
                     }
@@ -124,7 +119,7 @@ public class ParkDAO {
                 rs = stmt.executeQuery();
 
                 while(rs.next()) {
-                    Park park = new Park(rs.getString("id"), rs.getString("name"), rs.getFloat("latitude"), rs.getFloat("longitude"), rs.getString("state"));
+                    Park park = new Park(rs.getString("parkID"), rs.getString("name"), rs.getFloat("latitude"), rs.getFloat("longitude"), rs.getString("state"));
                     parks.add(park);
                 }
 
@@ -161,14 +156,14 @@ public class ParkDAO {
         return var20;
     }
 
-    public void delete(String name) throws DataAccessException {
-        String sql = "DELETE FROM Parks WHERE name = ?;";
+    public void delete(String parkID) throws DataAccessException {
+        String sql = "DELETE FROM Parks WHERE parkID = ?;";
 
         try {
             PreparedStatement stmt = this.conn.prepareStatement(sql);
 
             try {
-                stmt.setString(1, name);
+                stmt.setString(1, parkID);
                 stmt.executeUpdate();
             } catch (Throwable var7) {
                 if (stmt != null) {
@@ -192,7 +187,7 @@ public class ParkDAO {
     }
 
     public void deletePark(String parkID) throws DataAccessException {
-        String sql = "DELETE FROM parks WHERE id = ?;";
+        String sql = "DELETE FROM parks WHERE parkID = ?;";
 
         try {
             PreparedStatement stmt = this.conn.prepareStatement(sql);

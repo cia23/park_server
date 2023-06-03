@@ -5,7 +5,7 @@ import java.util.Objects;
 public class User {
     private String username;
     private String password;
-    private String id;
+    private String userID;
 
     /**
      * empty constructor for User
@@ -13,27 +13,27 @@ public class User {
     public User() {
         username = null;
         password = null;
-        id = null;
+        userID = null;
     }
 
     /**
      * User constructor with all parameters
      * @param username
      * @param password
-     * @param id
+     * @param userID
      */
-    public User(String username, String password, String id) {
+    public User(String username, String password, String userID) {
         this.username = username;
         this.password = password;
-        this.id = id;
+        this.userID = userID;
     }
 
-    public String getID() {
-        return id;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setID(String id) {
-        this.id = id;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getPassword() {
@@ -59,12 +59,12 @@ public class User {
         User user = (User) o;
         return (Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(id, user.id));
+                Objects.equals(userID, user.userID));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, id);
+        return Objects.hash(username, password, userID);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", personID='" + id + '\'' +
+                ", userID='" + userID + '\'' +
                 '}';
     }
 }
